@@ -9,7 +9,7 @@ custom:
 
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs20.x
   stage: dev
   region: ${env:AWS_DEFAULT_REGION, 'eu-west-1'}
 
@@ -19,17 +19,24 @@ resources:
       Type: AWS::S3::Bucket
       Properties:
         BucketName: ${self:custom.bucket}
-        AccessControl: PublicRead
         WebsiteConfiguration:
           IndexDocument: index.html
           ErrorDocument: index.html
+        OwnershipControls:
+          Rules:
+            - ObjectOwnership: ObjectWriter
+        PublicAccessBlockConfiguration:
+          BlockPublicAcls: false
+          BlockPublicPolicy: false
+          IgnorePublicAcls: false
+          RestrictPublicBuckets: false
     WebAppS3BucketPolicy:
       Type: AWS::S3::BucketPolicy
       Properties:
         Bucket:
           Ref: WebAppS3Bucket
         PolicyDocument:
-          Statement:
+            Statement:
             - Sid: PublicReadGetObject
               Effect: Allow
               Principal: "*"
@@ -44,4 +51,3 @@ resources:
       Type: "AWS::SQS::Queue"
       Properties:
         QueueName: "${self:custom.analysisqueue}"
-
