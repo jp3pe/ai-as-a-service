@@ -17,11 +17,16 @@ function deploy () {
   done
 }
 
+DOMAIN_SERVICES=(todo-service note-service schedule-service)
 function domain () {
-  cd todo-service
-  npm install
-  serverless create_domain
-  cd ..
+  for DOMAIN_SERVICE in "${DOMAIN_SERVICES[@]}"
+  do
+    echo ----------[ domain $DOMAIN_SERVICES ]----------
+    cd $DOMAIN_SERVICE
+    npm install
+    serverless create_domain
+    cd ..
+  done
 }
 
 domain
