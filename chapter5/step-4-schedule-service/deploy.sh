@@ -21,7 +21,7 @@ DOMAIN_SERVICES=(todo-service note-service schedule-service)
 function domain () {
   for DOMAIN_SERVICE in "${DOMAIN_SERVICES[@]}"
   do
-    echo ----------[ domain $DOMAIN_SERVICES ]----------
+    echo ----------[ domain $DOMAIN_SERVICE ]----------
     cd $DOMAIN_SERVICE
     npm install
     serverless create_domain
