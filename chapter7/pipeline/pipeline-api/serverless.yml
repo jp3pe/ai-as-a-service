@@ -3,13 +3,13 @@ frameworkVersion: ">=1.30.0"
 plugins:
   - serverless-dotenv-plugin
 custom:
-  region: ${env:AWS_DEFAULT_REGION, 'eu-west-1'}
-  accountid: ${env:AWS_ACCOUNT_ID}
   dotenv:
     path: ../.env
+  region: ${env:AWS_DEFAULT_REGION, 'eu-west-1'}
+  accountid: ${env:AWS_ACCOUNT_ID}
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs20.x
   stage: ${opt:stage, 'dev'}
   region: ${env:AWS_DEFAULT_REGION, 'eu-west-1'}
   iamRoleStatements:
@@ -22,8 +22,8 @@ resources:
     KinesisStream:
       Type: AWS::Kinesis::Stream
       Properties:
-        Name: ${env:CHAPTER7_PIPELINE_TRANSLATE_STREAM}
-        ShardCount: ${env:CHAPTER7_PIPELINE_SHARD_COUNT}
+        Name: ${env:CHAPTER7_PIPELINE_TRANSLATE_STREAM, 'c7ptransstream'}
+        ShardCount: ${env:CHAPTER7_PIPELINE_SHARD_COUNT, '1'}
 functions:
   ingest:
     handler: handler.ingest

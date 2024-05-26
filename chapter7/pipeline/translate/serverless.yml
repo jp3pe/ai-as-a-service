@@ -9,7 +9,7 @@ custom:
     path: ../.env
 provider:
   name: aws
-  runtime: nodejs14.x
+  runtime: nodejs20.x
   stage: ${opt:stage, 'dev'}
   region: ${env:AWS_DEFAULT_REGION, 'eu-west-1'}
   iamRoleStatements:
@@ -25,8 +25,8 @@ resources:
     KinesisStream:
       Type: AWS::Kinesis::Stream
       Properties:
-        Name: ${env:CHAPTER7_PIPELINE_SENTIMENT_STREAM}
-        ShardCount: ${env:CHAPTER7_PIPELINE_SHARD_COUNT}
+        Name: ${env:CHAPTER7_PIPELINE_SENTIMENT_STREAM, 'c7psentstream'}
+        ShardCount: ${env:CHAPTER7_PIPELINE_SHARD_COUNT, 1}
 functions:
   translate:
     handler: handler.translate
